@@ -1,6 +1,6 @@
 # AWS Image Optimization Pipeline
 
-This Terraform module puts CloudFront and an image-resizing Lambda in front of an existing private S3 bucket. It also creates an IAM policy for the application that signs upload URLs. It creates no logging, monitoring, or alerts. Terraform manages the bucket policy, so applying this module replaces any existing bucket-policy statements.
+This Terraform module puts CloudFront and an image-resizing Lambda in front of an existing private S3 bucket. It also creates an IAM policy for the application that signs upload URLs. Terraform manages the bucket policy, so applying this module replaces any existing bucket-policy statements.
 
 You need Terraform, Node.js, npm, an existing private S3 bucket, and AWS credentials that can manage the resources in this project. Configure an S3-backed Terraform state backend for shared deployments; otherwise Terraform uses local state. Terraform does not build the Lambda dependencies: it packages the existing `lambda/node_modules` and checks for Linux ARM64 Sharp and libvips.
 
@@ -38,4 +38,4 @@ CloudFront caches eligible 400, 404, and 5xx responses for 24 hours. S3's 403 re
 - **AVIF:** The optimizer currently produces WebP, not AVIF. Research AVIF conversion and benchmark Sharp against alternatives; AVIF conversion has been slow in our experiments.
 - **Packaging:** Sharp needs native binaries built for the Lambda runtime and CPU architecture. The current deployment uses Linux ARM64; investigate a simpler way to build and publish for ARM64 and x86-64.
 - **Missing assets:** On a cache miss under `/assets/*`, CloudFront checks S3 before invoking Lambda. Requests for nonexistent originals can therefore make both origin requests. Investigate how to reject invalid or permanently missing paths earlier.
-- **Caching after failover:** In [this AWS re:Post report](https://www.repost.aws/questions/QUnkYNoOJ3QhaFkoKeQJ6blg/cloudfront-origin-group-successful-200-from-secondary-origin-lambda-function-url-after-404-failover-is-not-cached-at-the-edge), a generated image is served by Lambda on the first request, fetched from S3 on the second, and cached on the third. Investigate why the successful Lambda response is not cached on the first request.
+- **Caching after failover:** In [this AWS re:Post report](https://www.repost.aws/questions/QUnkYNoOJ3QhaFkoKeQJ6blg/cloudfront-origin-group-successful-200-from-secondary-origin-lambda-function-url-after-404-failover-is-not-cached-at-the-edge), a generated image is served by Lambda on the first request, fetched from S3 on the second, and cached on the third. The link documents my own experiments and most of the evidence points to a CloudFront bug but you never know.
