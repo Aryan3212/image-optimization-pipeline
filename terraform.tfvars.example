@@ -1,0 +1,6 @@
+aws_region        = "ap-southeast-1"
+media_bucket_name = "replace-with-your-private-assets-bucket"
+name              = "my-image-cdn"
+
+# Set this only if clients upload directly with signed PUT URLs.
+upload_cors_allowed_origins = ["https://example.com"]
