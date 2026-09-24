@@ -1,6 +1,8 @@
-# AWS Image Optimization Pipeline
+# Image Optimization Pipeline for AWS
 
 This Terraform module puts CloudFront and an image-resizing Lambda in front of an existing private S3 bucket. It also creates an IAM policy for the application that signs upload URLs. Terraform manages the bucket policy, so applying this module replaces any existing bucket-policy statements.
+
+This is an independent project, not affiliated with or endorsed by Amazon Web Services (AWS). Its design can be adapted to another cloud, but this implementation requires AWS services and would need its Terraform resources and Lambda/S3 integration replaced.
 
 You need Terraform, Node.js, npm, an existing private S3 bucket, and AWS credentials that can manage the resources in this project. Configure an S3-backed Terraform state backend for shared deployments; otherwise Terraform uses local state. Terraform does not build the Lambda dependencies: it packages the existing `lambda/node_modules` and checks for Linux ARM64 Sharp and libvips.
 

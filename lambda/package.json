@@ -1,5 +1,5 @@
 {
-  "name": "aws-image-optimization-pipeline",
+  "name": "image-optimization-pipeline",
   "private": true,
   "type": "module",
   "scripts": {
